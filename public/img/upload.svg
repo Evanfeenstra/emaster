@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180px" height="180px" viewBox="0 0 180 180" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>752261CE-FC22-400A-AF31-3CD14F5A2DFE</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <circle id="path-1" cx="92" cy="92" r="90"></circle>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="180" height="180" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <linearGradient x1="0%" y1="121.458854%" x2="92.8060597%" y2="-23.3597149%" id="linearGradient-3">
+            <stop stop-color="#FF003E" offset="0%"></stop>
+            <stop stop-color="#A409AD" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop_Full-Length" transform="translate(-630.000000, -455.000000)">
+            <g id="Group-24" transform="translate(720.000000, 545.000000) rotate(-162.000000) translate(-720.000000, -545.000000) translate(628.000000, 453.000000)">
+                <use id="Oval-Copy-2" stroke="#FFFFFF" mask="url(#mask-2)" stroke-width="16" opacity="0.240745908" stroke-dasharray="109,4" transform="translate(92.000000, 92.000000) rotate(1.000000) translate(-92.000000, -92.000000) " xlink:href="#path-1"></use>
+                <circle id="Oval-Copy-6" fill="url(#linearGradient-3)" cx="92" cy="92" r="78"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

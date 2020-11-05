@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="68px" height="81px" viewBox="0 0 68 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>9CC72D48-79D8-4635-89C9-CA846273A826</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <filter x="-21.4%" y="-17.4%" width="142.9%" height="134.8%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop_Full-Length" transform="translate(-686.000000, -501.000000)" fill="#FFFFFF">
+            <g id="icon_upload-1" filter="url(#filter-1)" transform="translate(692.000000, 507.000000)">
+                <polygon id="icon/arrow-up" points="16 53 40 53 40 28.5384615 56 28.5384615 28 0 0 28.5384615 16 28.5384615"></polygon>
+                <rect id="Rectangle" x="0" y="61" width="56" height="8"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
