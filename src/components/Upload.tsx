@@ -8,8 +8,10 @@ const acceptTypes = 'audio/*,.mp3,.wav,.m4a,.aif,.wma,.flac,.aiff,.aax,.ogg'
 
 interface UploadProps {
   filekey: string
+  name?: string
+  style?: {[k:string]:any}
 }
-export default function Upload({ filekey }: UploadProps) {
+export default function Upload({ filekey, name, style }: UploadProps) {
   const [visible, setVisible] = useState<boolean>(false)
   const [uploading, setUploading] = useState<boolean>(false)
   const [filename, setFilename] = useState<string>('')
@@ -53,21 +55,22 @@ export default function Upload({ filekey }: UploadProps) {
     downloadBase64File(String(content), filename)
   }
 
-  return <Wrap visible={visible}>
-    <Main {...getRootProps()} show={!uploading}>
+  const extraStyle = style||{}
+  return <Wrap visible={visible} style={extraStyle}>
+    <Main {...getRootProps()} show={!uploading} hasName={name?true:false}>
       {!hasFile && <Input {...getInputProps()} placeholder={filekey} />}
       {/* <Progress /> */}
-      <UploadPicWrap onClick={download}>
+      <UploadPicWrap onClick={download} data-testid="click-to-download">
         <UploadPic src="/img/upload.svg" download={hasFile} alt="upload" />
       </UploadPicWrap>
-      <Content>
+      <Content top={name?9:18}>
         <Arrow src={hasFile ? "/img/icon_download.svg" : "/img/icon_upload-1.svg"} alt="upload-arrow" />
         <Text bold>
-          {hasFile ? 'Download your file' : 'Drop your track here'}
+          {hasFile ? 'Download your file' : (name?.toUpperCase()||'Drop your track here')}
         </Text>
-        <Text>
+        {!name && <Text>
           {hasFile ? filename : 'Or click to browse'}
-        </Text>
+        </Text>}
       </Content>
     </Main>
     <Progress show={uploading} />
@@ -121,11 +124,14 @@ const UploadPic = styled.img<UploadPicProps>`
   transform-origin: center center;
   ${p => p.download && 'filter: hue-rotate(240deg)'};
 `
-const Content = styled.div`
+interface ContentProps {
+  top:number
+}
+const Content = styled.div<ContentProps>`
   transition: .3s -webkit-transform ease;
   transition: .3s transform ease;
   position: relative;
-  top: 18px;
+  top: ${p=>p.top}px;
   z-index: 5000;
   pointer-events: none;
   display:flex;
@@ -149,8 +155,19 @@ const Text = styled.h4<TextProps>`
   text-overflow: ellipsis;
   overflow: hidden;
 `
+const pulse = keyframes`
+  0% {transform: scale(1)}
+  50% {transform: scale(1.05)}
+  100% {transform: rotate(1)}
+`
+const Arrow = styled.img`
+  height:92px;
+  width:92px;
+  transform-origin: center bottom;
+`
 interface MainProps {
   show: boolean
+  hasName: boolean
 }
 const Main = styled.div<MainProps>`
   opacity:${p => p.show ? 1 : 0};
@@ -169,11 +186,14 @@ const Main = styled.div<MainProps>`
     animation: ${rotate360} 3s linear infinite;
   }
   &:hover ${Content} {
-    transform: translateY(-82px);
+    transform: translateY(${p=>p.hasName?-73:-82}px);
   }
   &:hover ${Text} {
     opacity:1;
     transition: .3s opacity ease;
+  }
+  &:hover ${Arrow} {
+    animation: ${pulse} 1s ease infinite;
   }
   &:before{
     content:"";
@@ -206,10 +226,6 @@ const Wrap = styled.div<WrapProps>`
 const Input = styled.input`
   transition: .3s transform ease;
   transform-origin: center bottom;
-`
-const Arrow = styled.img`
-  height:92px;
-  width:92px;
 `
 async function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms))
