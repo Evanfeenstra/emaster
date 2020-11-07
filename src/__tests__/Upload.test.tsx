@@ -11,7 +11,7 @@ test('file upload', async () => {
   const contentKey = `${filekey}_content`
   const nameKey = `${filekey}_name`
 
-  await act(async () => {
+  await act(() => {
     render(<Upload filekey={filekey} />);
   })
 
@@ -53,7 +53,7 @@ test('file upload', async () => {
 test('file upload wrong filetype', async () => {
 
   const filekey = 'wrong'
-  await act(async () => {
+  await act(() => {
     render(<Upload filekey={filekey} />);
   })
 

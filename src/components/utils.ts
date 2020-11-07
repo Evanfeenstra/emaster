@@ -1,4 +1,4 @@
-export function toBase64(file:File):Promise<string> {
+export function toBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -7,7 +7,7 @@ export function toBase64(file:File):Promise<string> {
   })
 }
 
-export function downloadBase64File(base64Data:string, fileName:string) {
+export function downloadBase64File(base64Data: string, fileName: string) {
   const linkSource = base64Data;
   const downloadLink = document.createElement("a");
   downloadLink.href = linkSource;

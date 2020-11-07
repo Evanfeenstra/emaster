@@ -4,8 +4,10 @@ import styled from 'styled-components'
 interface Props {
   onClick: React.MouseEventHandler<HTMLButtonElement>
 }
-export default function MobileUpload({onClick}:Props){
-  return <Wrap onClick={onClick}>
+export default function MobileUpload({ onClick }: Props) {
+  return <Wrap onClick={onClick} 
+    data-testid="mobile-upload"
+  >
     UPLOAD A TRACK
     <Arrow src="/img/right_arrow.svg" />
   </Wrap>

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import {ToggleMode} from '../types'
+import { ToggleMode } from '../types'
 
 interface Props {
   items: Array<ToggleMode>
@@ -10,11 +10,16 @@ interface Props {
 export default function Toggle({ items, value, onChange }: Props) {
   return <Wrap>
     {items.map(item => {
-      return <Background key={item} onClick={()=>onChange(item)}>
+      return <Background key={item} 
+        onClick={() => onChange(item)} 
+        data-testid={`toggle-clickable-${item}`}
+      >
         {item}
       </Background>
     })}
-    <Surface index={items.indexOf(value)} data-testid="toggle-surface">
+    <Surface index={items.indexOf(value)} 
+      data-testid="toggle-surface"
+    >
       {value}
     </Surface>
   </Wrap>

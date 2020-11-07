@@ -4,10 +4,10 @@ import styled from 'styled-components'
 interface Props {
   text: string
   onClick: React.MouseEventHandler<HTMLButtonElement>,
-  style?: {[k:string]:any}
+  style?: { [k: string]: any }
 }
-export default function Button({text,onClick,style}:Props){
-  const s = style||{}
+export default function Button({ text, onClick, style }: Props) {
+  const s = style || {}
   return <Wrap onClick={onClick} style={s}>
     {text}
   </Wrap>

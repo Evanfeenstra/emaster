@@ -8,11 +8,11 @@ const acceptTypes = 'audio/*,.mp3,.wav,.m4a,.aif,.wma,.flac,.aiff,.aax,.ogg'
 
 interface UploadProps {
   filekey: string // key for localForage
-  noGrow: boolean // dont grow on hover, in mobile view
+  noGrow?: boolean // dont grow on hover, in mobile view
   name?: string // name to display
-  style?: { [k: string]: any }
+  second?: boolean // the second Upload in a row
 }
-export default function Upload({ filekey, name, noGrow, style }: UploadProps) {
+export default function Upload({ filekey, name, noGrow, second }: UploadProps) {
   const [visible, setVisible] = useState<boolean>(false)
   const [uploading, setUploading] = useState<boolean>(false)
   const [filename, setFilename] = useState<string>('')
@@ -58,9 +58,15 @@ export default function Upload({ filekey, name, noGrow, style }: UploadProps) {
 
   const inputProps = getInputProps()
   const rootProps = getRootProps()
-  const extraStyle = style || {}
-  return <Wrap visible={visible} style={extraStyle}>
-    <Main {...rootProps} show={!uploading} hasName={name ? true : false} noGrow={noGrow}>
+  return <Wrap visible={visible} 
+    second={second ? true : false}
+  >
+    <Main {...rootProps} 
+      show={!uploading} 
+      hasName={name ? true : false} 
+      noGrow={noGrow ? true : false}
+      isDragActive={isDragActive}
+    >
       {!hasFile && <Input {...inputProps} placeholder={filekey} />}
       <UploadPicWrap onClick={download} data-testid="click-to-download">
         <UploadPic src="/img/upload.svg" download={hasFile} alt="upload" />
@@ -176,9 +182,11 @@ interface MainProps {
   show: boolean
   hasName: boolean
   noGrow: boolean
+  isDragActive: boolean
 }
 const Main = styled.div<MainProps>`
   opacity:${p => p.show ? 1 : 0};
+  ${p => p.isDragActive && 'filter: hue-rotate(140deg)'};
   z-index:210;
   cursor: pointer;
   height:184px;
@@ -231,6 +239,7 @@ const Main = styled.div<MainProps>`
 `
 interface WrapProps {
   visible: boolean
+  second: boolean
 }
 const Wrap = styled.div<WrapProps>`
   opacity:${p => p.visible ? 1 : 0};
@@ -238,6 +247,11 @@ const Wrap = styled.div<WrapProps>`
   height:184px;
   width:184px;
   position:relative;
+  margin-left:${p => p.second ? 55 : 0}px;
+  @media (max-width: 400px) {
+    margin-left:0;
+    margin-top:${p => p.second ? 16 : 0}px;
+  }
 `
 const Input = styled.input`
   transition: .3s transform ease;

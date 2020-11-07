@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components'
 interface Props {
   mobileUpload: boolean
 }
-export default function Text({mobileUpload}:Props) {
-  if(mobileUpload) {
+export default function Text({ mobileUpload }: Props) {
+  if (mobileUpload) {
     return <UploadTrack>Upload Track</UploadTrack>
   }
   return <>

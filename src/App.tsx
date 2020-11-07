@@ -9,7 +9,7 @@ import {ToggleMode} from './types'
 
 function App() {
   const [selected,setSelected] = useState<ToggleMode>('normal')
-  const [mobileUpload, setMobileUpload] = useState(false)
+  const [mobileUpload, setMobileUpload] = useState<boolean>(false)
 
   function openOptions(){}
 
@@ -27,7 +27,7 @@ function App() {
       {showReference ? 
         <>
           <Upload filekey="original" name="original" noGrow={mobileUpload} />
-          <Upload filekey="reference" name="reference" noGrow={mobileUpload} style={{marginLeft:65}} />
+          <Upload filekey="reference" name="reference" noGrow={mobileUpload} second />
         </> :
         <Upload filekey="main" key="main" noGrow={mobileUpload} /> // "key" here prevents "original" from keeping "main" state on toggle
       }
@@ -46,6 +46,10 @@ function App() {
     {mobileUpload && <Row>
       <Button text="options" onClick={openOptions} />
     </Row>}
+
+    <Row>
+      <ScrollDown src="/img/icon_scroll_down.svg" />
+    </Row>
 
   </Wrap>
 }
@@ -100,6 +104,9 @@ const UploadWrap = styled.div<UploadWrapProps>`
       display:none;
     }
   `}
+  @media (max-width: 400px) {
+    flex-direction:column;
+  }
 `
 const MobileUploadWrap = styled.div`
   width:100%;
@@ -110,5 +117,9 @@ const MobileUploadWrap = styled.div`
   @media (max-width: 768px) {
     display:flex;
   }
+`
+const ScrollDown = styled.img`
+  position:relative;
+  cursor: pointer;
 `
 export default App;

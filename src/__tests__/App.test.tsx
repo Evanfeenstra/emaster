@@ -1,15 +1,24 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import App from '../App';
 
-test('toggle interaction', async () => {
+test('app toggle', async () => {
 
-  render(<App />);
+  await act(async () => {
+    render(<App />);
+  })
 
   // check only one upload button
+  const uploadElements = screen.getAllByAltText('upload')
+  expect(uploadElements.length).toEqual(1)
 
-  const toggle = screen.queryByTestId('toggle-clickable') as HTMLElement
+  await act(async () => {
+    const toggle = screen.queryByTestId('toggle-clickable-reference') as HTMLElement
+    fireEvent.click(toggle)
+  })
 
-  // check two
+  // check there are 2 now
+  const uploadElements2 = screen.getAllByAltText('upload')
+  expect(uploadElements2.length).toEqual(2)
 
 })
