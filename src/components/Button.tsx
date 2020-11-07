@@ -1,8 +1,14 @@
 import React from 'react';
 import styled from 'styled-components'
 
-export default function Button({text,onClick}:{text:string,onClick:React.MouseEventHandler<HTMLButtonElement>}){
-  return <Wrap onClick={onClick}>
+interface Props {
+  text: string
+  onClick: React.MouseEventHandler<HTMLButtonElement>,
+  style?: {[k:string]:any}
+}
+export default function Button({text,onClick,style}:Props){
+  const s = style||{}
+  return <Wrap onClick={onClick} style={s}>
     {text}
   </Wrap>
 }
@@ -10,7 +16,6 @@ export default function Button({text,onClick}:{text:string,onClick:React.MouseEv
 const Wrap = styled.button`
   color:white;
   background:transparent;
-  margin-left:24px;
   cursor: pointer;
   display:flex;
   align-items: center;

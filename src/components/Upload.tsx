@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { useDropzone } from 'react-dropzone'
 import { toBase64, downloadBase64File } from './utils'
 import * as localForage from 'localforage'
@@ -7,11 +7,12 @@ import * as localForage from 'localforage'
 const acceptTypes = 'audio/*,.mp3,.wav,.m4a,.aif,.wma,.flac,.aiff,.aax,.ogg'
 
 interface UploadProps {
-  filekey: string
-  name?: string
-  style?: {[k:string]:any}
+  filekey: string // key for localForage
+  noGrow: boolean // dont grow on hover, in mobile view
+  name?: string // name to display
+  style?: { [k: string]: any }
 }
-export default function Upload({ filekey, name, style }: UploadProps) {
+export default function Upload({ filekey, name, noGrow, style }: UploadProps) {
   const [visible, setVisible] = useState<boolean>(false)
   const [uploading, setUploading] = useState<boolean>(false)
   const [filename, setFilename] = useState<string>('')
@@ -20,8 +21,8 @@ export default function Upload({ filekey, name, style }: UploadProps) {
   const nameKey = `${filekey}_name`
 
   const onDrop = useCallback(async acceptedFiles => {
-    if(hasFile) return
-    if(acceptedFiles.length===0) return
+    if (hasFile) return
+    if (acceptedFiles.length === 0) return
     setUploading(true)
     const file = acceptedFiles[0]
     await sleep(1000)
@@ -49,26 +50,31 @@ export default function Upload({ filekey, name, style }: UploadProps) {
     accept: acceptTypes
   })
 
-  async function download(){
-    if(!hasFile) return
+  async function download() {
+    if (!hasFile) return
     const content = await localForage.getItem(contentKey)
     downloadBase64File(String(content), filename)
   }
 
-  const extraStyle = style||{}
+  const inputProps = getInputProps()
+  const rootProps = getRootProps()
+  const extraStyle = style || {}
   return <Wrap visible={visible} style={extraStyle}>
-    <Main {...getRootProps()} show={!uploading} hasName={name?true:false}>
-      {!hasFile && <Input {...getInputProps()} placeholder={filekey} />}
-      {/* <Progress /> */}
+    <Main {...rootProps} show={!uploading} hasName={name ? true : false} noGrow={noGrow}>
+      {!hasFile && <Input {...inputProps} placeholder={filekey} />}
       <UploadPicWrap onClick={download} data-testid="click-to-download">
         <UploadPic src="/img/upload.svg" download={hasFile} alt="upload" />
       </UploadPicWrap>
-      <Content top={name?9:18}>
-        <Arrow src={hasFile ? "/img/icon_download.svg" : "/img/icon_upload-1.svg"} alt="upload-arrow" />
+      <Content>
+        <Arrow alt="upload-arrow" hasFile={hasFile}
+          src={hasFile ? "/img/icon_download.svg" : "/img/icon_upload-1.svg"}
+        />
         <Text bold>
-          {hasFile ? 'Download your file' : (name?.toUpperCase()||'Drop your track here')}
+          {name ? name.toUpperCase() : !noGrow && (
+            hasFile ? 'Download your file' : 'Drop your track here'
+          )}
         </Text>
-        {!name && <Text>
+        {!name && !noGrow && <Text>
           {hasFile ? filename : 'Or click to browse'}
         </Text>}
       </Content>
@@ -124,14 +130,10 @@ const UploadPic = styled.img<UploadPicProps>`
   transform-origin: center center;
   ${p => p.download && 'filter: hue-rotate(240deg)'};
 `
-interface ContentProps {
-  top:number
-}
-const Content = styled.div<ContentProps>`
+const Content = styled.div`
   transition: .3s -webkit-transform ease;
   transition: .3s transform ease;
   position: relative;
-  top: ${p=>p.top}px;
   z-index: 5000;
   pointer-events: none;
   display:flex;
@@ -148,7 +150,7 @@ const Text = styled.h4<TextProps>`
   font-weight:${p => p.bold ? 'bold' : 'normal'};
   color:white;
   margin:0;
-  opacity:0;
+  font-size:14px;
   max-width: 215px;
   text-align: center;
   white-space: nowrap;
@@ -160,14 +162,20 @@ const pulse = keyframes`
   50% {transform: scale(1.05)}
   100% {transform: rotate(1)}
 `
-const Arrow = styled.img`
-  height:92px;
-  width:92px;
+interface ArrowProps {
+  hasFile: boolean
+}
+// down arrow pic has more padding :(
+const Arrow = styled.img<ArrowProps>`
+  height:${p => p.hasFile ? 100 : 92}px;
+  width:${p => p.hasFile ? 100 : 92}px;
   transform-origin: center bottom;
+  margin-bottom:${p => p.hasFile ? -9 : 0}px;
 `
 interface MainProps {
   show: boolean
   hasName: boolean
+  noGrow: boolean
 }
 const Main = styled.div<MainProps>`
   opacity:${p => p.show ? 1 : 0};
@@ -179,22 +187,22 @@ const Main = styled.div<MainProps>`
   position:absolute;
   transition: .3s transform ease;
   transform-origin: center bottom;
-  &:hover ${UploadPicWrap} {
-    transform:scale3d(1.67,1.67,1.67);
+  & ${Content} {
+    top:${p => p.noGrow ? 0 : (p.hasName ? -4 : 14)}px;
   }
-  &:hover ${UploadPic} {
-    animation: ${rotate360} 3s linear infinite;
-  }
-  &:hover ${Content} {
-    transform: translateY(${p=>p.hasName?-73:-82}px);
+  & ${Text} {
+    opacity: ${p => p.hasName ? 1 : 0};
   }
   &:hover ${Text} {
     opacity:1;
     transition: .3s opacity ease;
   }
+  &:hover ${UploadPic} {
+    animation: ${rotate360} 3s linear infinite;
+  }
   &:hover ${Arrow} {
     animation: ${pulse} 1s ease infinite;
-  }
+  }  
   &:before{
     content:"";
     pointer-events:none;
@@ -209,8 +217,16 @@ const Main = styled.div<MainProps>`
     z-index: -2;
     border-radius:100%;
   }
+  &:hover ${Content} {
+    transform: translateY(${p => p.noGrow ? 0 :
+    p.hasName ? -62 : -82
+  }px);
+  }
+  &:hover ${UploadPicWrap} {
+    ${p => !p.noGrow && `transform:scale3d(1.67,1.67,1.67);`}
+  }
   &:hover:before{
-    transform:scale(30);
+    ${p => !p.noGrow && `transform:scale(30);`}
   }
 `
 interface WrapProps {

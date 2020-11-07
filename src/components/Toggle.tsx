@@ -1,15 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import styled, { css, keyframes } from 'styled-components'
+import React from 'react';
+import styled from 'styled-components'
+import {ToggleMode} from '../types'
 
-export default function Toggle({items,value,onChange}:{items:Array<string>,onChange:Function,value:string}){
-  function onSelect(){
-    let i = items.indexOf(value) + 1
-    if(i>items.length-1) i=0
-    onChange(items[i])
-  }
-  return <Wrap onClick={onSelect} data-testid="toggle-clickable">
-    {items&&items.map(item=>{
-      return <Background key={item}>{item}</Background>
+interface Props {
+  items: Array<ToggleMode>
+  onChange: Function
+  value: ToggleMode
+}
+export default function Toggle({ items, value, onChange }: Props) {
+  return <Wrap>
+    {items.map(item => {
+      return <Background key={item} onClick={()=>onChange(item)}>
+        {item}
+      </Background>
     })}
     <Surface index={items.indexOf(value)} data-testid="toggle-surface">
       {value}
@@ -38,10 +41,10 @@ const Background = styled.div`
   width:140px;
 `
 interface SurfaceProps {
-  index:number
+  index: number
 }
 const Surface = styled.div<SurfaceProps>`
-  transform: translateX(${p=>140*p.index}px);
+  transform: translateX(${p => 140 * p.index}px);
   transition: transform .3s cubic-bezier(0,1,.5,1);
   background:white;
   text-transform: uppercase;

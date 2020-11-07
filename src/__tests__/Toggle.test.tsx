@@ -6,7 +6,7 @@ import Toggle from '../components/Toggle';
 test('toggle', async () => {
 
   render(<Toggle items={['normal','reference']} 
-    value={"reference"} onChange={()=>{}}
+    value="reference" onChange={()=>{}}
   />);
 
   const surface = screen.queryByTestId('toggle-surface') as HTMLElement
