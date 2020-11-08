@@ -8,35 +8,34 @@ interface State {
 interface Store {
   selected: ToggleMode
   mobileUpload: boolean
-  set: (s:State)=>void
+  set: (s: State) => void
 }
 const initialState: Store = {
   selected: 'normal',
   mobileUpload: false,
-  set:(s:State)=>{}
+  set: (s: State) => { } // stub
 }
 
 const context = createContext(initialState)
 
-export function useStore():Store {
+export function useStore(): Store {
   return useContext(context)
 }
 
 interface Props {
   children: React.ReactNode
 }
-export function StoreProvider(props:Props) {
-  const [state,setState] = useState(initialState)
+export function StoreProvider({ children }: Props) {
+  const [state, setState] = useState(initialState)
 
-  function set(newState:State){
-    setState(current=>{
-      return {...current, ...newState}
+  function set(newState: State) {
+    setState(current => {
+      return { ...current, ...newState }
     })
   }
-
   return <context.Provider value={{
     ...state, set
   }}>
-    {props.children}
+    {children}
   </context.Provider>
 }

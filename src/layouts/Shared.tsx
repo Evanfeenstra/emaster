@@ -6,7 +6,7 @@ import styled from 'styled-components'
 export function UploadButtons() {
   const { selected, mobileUpload } = useStore()
   const showReference = selected === 'reference'
-  return <UploadWrap mobileUpload={mobileUpload}>
+  return <UploadWrap>
     {showReference ?
       <>
         <Upload filekey="original" name="original" noGrow={mobileUpload} />
@@ -17,30 +17,20 @@ export function UploadButtons() {
   </UploadWrap>
 }
 
-interface UploadWrapProps {
-  mobileUpload: boolean
-}
-const UploadWrap = styled.div<UploadWrapProps>`
+const UploadWrap = styled.div`
   width:100%;
   position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-  ${p => !p.mobileUpload && `
-    @media (max-width: 768px) {
-      display:none;
-    }
-  `}
   @media (max-width: 400px) {
     flex-direction:column;
   }
 `
-
 export const ScrollDown = styled.img`
   position:relative;
   cursor: pointer;
 `
-
 export const Controls = styled.div`
   width:100%;
   display:flex;
@@ -51,7 +41,6 @@ export const Controls = styled.div`
     display:none;
   }
 `
-
 export const Row = styled.div`
   width:100%;
   display:flex;

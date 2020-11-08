@@ -6,7 +6,7 @@ import { UploadButtons, ScrollDown, Row } from './Shared'
 import Button from '../components/Button'
 import Toggle from '../components/Toggle'
 import { modes } from '../App'
-import MobileUpload from '../components/MobileUpload'
+import MobileUpload from '../components/MobileUploadButton'
 
 export default function Mobile() {
   const { selected, mobileUpload, set } = useStore()
@@ -20,7 +20,7 @@ export default function Mobile() {
       />
     </Row>}
 
-    <UploadButtons />
+    {mobileUpload && <UploadButtons />}
 
     {!mobileUpload && <MobileUploadWrap>
       <MobileUpload onClick={() => set({ mobileUpload: true })} />
