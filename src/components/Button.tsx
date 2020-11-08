@@ -7,8 +7,7 @@ interface Props {
   style?: { [k: string]: any }
 }
 export default function Button({ text, onClick, style }: Props) {
-  const s = style || {}
-  return <Wrap onClick={onClick} style={s}>
+  return <Wrap onClick={onClick} style={style || {}}>
     {text}
   </Wrap>
 }

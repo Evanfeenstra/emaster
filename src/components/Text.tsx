@@ -3,7 +3,7 @@ import React from 'react';
 import styled, { css } from 'styled-components'
 
 interface Props {
-  mobileUpload: boolean
+  mobileUpload?: boolean
 }
 export default function Text({ mobileUpload }: Props) {
   if (mobileUpload) {

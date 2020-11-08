@@ -4,7 +4,7 @@ import { ToggleMode } from '../types'
 
 interface Props {
   items: Array<ToggleMode>
-  onChange: Function
+  onChange: (s:string)=>void
   value: ToggleMode
 }
 export default function Toggle({ items, value, onChange }: Props) {

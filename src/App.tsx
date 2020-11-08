@@ -1,57 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components'
-import Upload from './components/Upload'
-import Text from './components/Text'
-import Toggle from './components/Toggle'
-import Button from './components/Button'
-import MobileUpload from './components/MobileUpload'
-import {ToggleMode} from './types'
+import Mobile from './layouts/Mobile'
+import Desktop from './layouts/Desktop'
+import { ToggleMode } from './types'
+import { StoreProvider, useViewport } from './hooks'
+
+export const modes: ToggleMode[] = ['normal', 'reference']
+
+export const breakpoint = 768;
 
 function App() {
-  const [selected,setSelected] = useState<ToggleMode>('normal')
-  const [mobileUpload, setMobileUpload] = useState<boolean>(false)
-
-  function openOptions(){}
-
-  const showReference = selected==='reference'
-  return <Wrap>
-    <Text mobileUpload={mobileUpload} />
-
-    {mobileUpload && <Row>
-      <Toggle items={['normal','reference']} 
-        value={selected} onChange={setSelected}
-      />
-    </Row>}
-
-    <UploadWrap mobileUpload={mobileUpload}>
-      {showReference ? 
-        <>
-          <Upload filekey="original" name="original" noGrow={mobileUpload} />
-          <Upload filekey="reference" name="reference" noGrow={mobileUpload} second />
-        </> :
-        <Upload filekey="main" key="main" noGrow={mobileUpload} /> // "key" here prevents "original" from keeping "main" state on toggle
+  const { width } = useViewport()
+  return <StoreProvider>
+    <Wrap>
+      {width < breakpoint ?
+        <Mobile /> :
+        <Desktop />
       }
-    </UploadWrap>
-    {!mobileUpload && <MobileUploadWrap>
-      <MobileUpload onClick={()=>setMobileUpload(true)} />
-    </MobileUploadWrap>}
-
-    {!mobileUpload && <Controls>
-      <Toggle items={['normal','reference']} 
-        value={selected} onChange={setSelected}
-      />
-      <Button text="options" onClick={openOptions} style={{marginLeft:24}} />
-    </Controls>}
-
-    {mobileUpload && <Row>
-      <Button text="options" onClick={openOptions} />
-    </Row>}
-
-    <Row>
-      <ScrollDown src="/img/icon_scroll_down.svg" />
-    </Row>
-
-  </Wrap>
+    </Wrap>
+  </StoreProvider>
 }
 
 const Wrap = styled.div`
@@ -72,54 +39,5 @@ const Wrap = styled.div`
     top:0;left:0;bottom:0;right:0;
   }
 `
-const Controls = styled.div`
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top:35px;
-  @media (max-width: 768px) {
-    display:none;
-  }
-`
-const Row = styled.div`
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top:32px;
-  margin-bottom:32px;
-`
-interface UploadWrapProps{
-  mobileUpload:boolean
-}
-const UploadWrap = styled.div<UploadWrapProps>`
-  width:100%;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  ${p=>!p.mobileUpload && `
-    @media (max-width: 768px) {
-      display:none;
-    }
-  `}
-  @media (max-width: 400px) {
-    flex-direction:column;
-  }
-`
-const MobileUploadWrap = styled.div`
-  width:100%;
-  position:relative;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  @media (max-width: 768px) {
-    display:flex;
-  }
-`
-const ScrollDown = styled.img`
-  position:relative;
-  cursor: pointer;
-`
+
 export default App;
